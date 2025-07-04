@@ -11,7 +11,7 @@
         <div class="input-box">
             Enter Location : 
             <input type="text" class="search-box">
-            <button class="search-button" onclick="getWeather()">Search</button>
+            <button class="search-button">Search</button>
         </div>
         <div class="details">
             <div class="error-message"></div>
@@ -27,43 +27,44 @@
         </div>
     </div>
     <script>
-        function getWeather(){
-            const search = document.querySelector('.search-button');
-            const locationDetails = document.querySelector('.location-details');
-            const tempDetails = document.querySelector('.temp-details');
-            let errorMsg = document.querySelector('.error-message');
-            search.addEventListener('click', ()=>{
-                const APIKey = '34e6c67814c20c930dcca3e74f0d854b';
-                const city = document.querySelector('.search-box').value;
-    
-                if(city === '') return;
-    
-                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
-                    .then(response => response.json())
-                    .then(json => {
-                        if(json.cod==='404'){
-                            locationDetails.style.display = 'none';
-                            tempDetails.style.display = 'none';
-                            errorMsg.style.display = 'block';
-                            errorMsg.innerHTML = `<p>Invalid Location. Try Again.</p>`
-                        }
-    
-                        errorMsg.style.display = 'none';
-    
-                        const locationName = document.querySelector('.location-name');
-                        const locationDesc = document.querySelector('.location-description');
-                        const temperature = document.querySelector('.temp-details .temperature');
-                        const windSpeed = document.querySelector('.temp-details .wind-speed');
-                        const humidity = document.querySelector('.temp-details .humidity');
-    
-                        locationName.innerHTML = `${document.querySelector('.search-box').value}<br>`;
-                        locationDesc.innerHTML = `${json.weather[0].description}`;
-                        temperature.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
-                        windSpeed.innerHTML = `${parseInt(json.wind.speed)}Km/h`;
-                        humidity.innerHTML = `${json.main.humidity}%`;
-                    })
-            })
-        }
+        const search = document.querySelector('.search-button');
+        const locationDetails = document.querySelector('.location-details');
+        const tempDetails = document.querySelector('.temp-details');
+        let errorMsg = document.querySelector('.error-message');
+        search.addEventListener('click', ()=>{
+            const APIKey = '34e6c67814c20c930dcca3e74f0d854b';
+            const city = document.querySelector('.search-box').value;
+
+            if(city === '') return;
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
+                .then(response => response.json())
+                .then(json => {
+                    if(json.cod==='404'){
+                        locationDetails.style.display = 'none';
+                        tempDetails.style.display = 'none';
+                        errorMsg.style.display = 'block';
+                        errorMsg.innerHTML = `<p>Invalid Location. Try Again.</p>`
+                    }
+                    
+                    locationDetails.style.display = 'block';
+                    tempDetails.style.display = 'block';
+
+                    errorMsg.style.display = 'none';
+
+                    const locationName = document.querySelector('.location-name');
+                    const locationDesc = document.querySelector('.location-description');
+                    const temperature = document.querySelector('.temp-details .temperature');
+                    const windSpeed = document.querySelector('.temp-details .wind-speed');
+                    const humidity = document.querySelector('.temp-details .humidity');
+
+                    locationName.innerHTML = `${document.querySelector('.search-box').value}<br>`;
+                    locationDesc.innerHTML = `${json.weather[0].description}`;
+                    temperature.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
+                    windSpeed.innerHTML = `${parseInt(json.wind.speed)}Km/h`;
+                    humidity.innerHTML = `${json.main.humidity}%`;
+                })
+        })
     </script>
 </body>
 </html>
