@@ -1,1 +1,1 @@
-This repo is to contain all my practice projects
+All the projects made by me will be pushed into this repo
